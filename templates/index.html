@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mass Email Sender</title>
+</head>
+<body>
+    <h1>Mass Email Sender</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        
+        <div>
+            {{ form.sender_email.label }} {{ form.sender_email }}
+        </div>
+        <div>
+            {{ form.sender_password.label }} {{ form.sender_password }}
+        </div>
+        <div>
+            {{ form.subject.label }} {{ form.subject }}
+        </div>
+        <div>
+            {{ form.recipient_emails.label }} {{ form.recipient_emails }}
+        </div>
+        <div>
+            {{ form.message.label }} {{ form.message }}
+        </div>
+        <div>
+            <button type="submit">Send Emails</button>
+        </div>
+    </form>
+</body>
+</html>
