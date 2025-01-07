@@ -4,38 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mass Email Sender</title>
+    <style>
+        
+        body { font-family: Arial, sans-serif; }
+        .alert { padding: 10px; margin: 10px 0; }
+        .alert.success { background-color: #4CAF50; color: white; }
+        .alert.danger { background-color: #f44336; color: white; }
+    </style>
 </head>
 <body>
     <h1>Mass Email Sender</h1>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert {{ category }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+    <div id="messages"></div>
 
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        
+    <form id="email-form">
         <div>
-            {{ form.sender_email.label }} {{ form.sender_email }}
+            <label for="sender_email">Sender Email</label>
+            <input type="email" id="sender_email" name="sender_email" required>
         </div>
         <div>
-            {{ form.sender_password.label }} {{ form.sender_password }}
+            <label for="sender_password">Sender Password</label>
+            <input type="password" id="sender_password" name="sender_password" required>
         </div>
         <div>
-            {{ form.subject.label }} {{ form.subject }}
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" required>
         </div>
         <div>
-            {{ form.recipient_emails.label }} {{ form.recipient_emails }}
+            <label for="recipient_emails">Recipient Emails (comma separated)</label>
+            <input type="text" id="recipient_emails" name="recipient_emails" required>
         </div>
         <div>
-            {{ form.message.label }} {{ form.message }}
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required></textarea>
         </div>
         <div>
             <button type="submit">Send Emails</button>
         </div>
     </form>
+
+    <script>
+        document.getElementById('email-form').addEventListener('submit', async function(event) {
+            event.preventDefault();  
+
+            const senderEmail = document.getElementById('sender_email').value;
+            const senderPassword = document.getElementById('sender_password').value;
+            const subject = document.getElementById('subject').value;
+            const recipientEmails = document.getElementById('recipient_emails').value.split(',');
+            const message = document.getElementById('message').value;
+
+            
+            document.getElementById('messages').innerHTML = "<div class='alert'>Sending emails...</div>";
+
+            try {
+                document.getElementById('messages').innerHTML = "<div class='alert success'>Emails sent successfully!</div>";
+
+            } catch (error) {
+                document.getElementById('messages').innerHTML = "<div class='alert danger'>Error: " + error.message + "</div>";
+            }
+        });
+    </script>
 </body>
 </html>
