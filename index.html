@@ -1,67 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mass Email Sender</title>
-    <style>
-        
-        body { font-family: Arial, sans-serif; }
-        .alert { padding: 10px; margin: 10px 0; }
-        .alert.success { background-color: #4CAF50; color: white; }
-        .alert.danger { background-color: #f44336; color: white; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Tool</title>
+  <script src="https://smtpjs.com/v3/smtp.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      background-color: white;
+      padding: 20px;
+      border: 1px solid #ccc;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 22px;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #4CAF50;
+      outline: none;
+    }
+
+    button {
+      background-color: #87CEEB; 
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #7EC8D2; 
+    }
+
+    .message {
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Mass Email Sender</h1>
-    <div id="messages"></div>
-
-    <form id="email-form">
-        <div>
-            <label for="sender_email">Sender Email</label>
-            <input type="email" id="sender_email" name="sender_email" required>
-        </div>
-        <div>
-            <label for="sender_password">Sender Password</label>
-            <input type="password" id="sender_password" name="sender_password" required>
-        </div>
-        <div>
-            <label for="subject">Subject</label>
-            <input type="text" id="subject" name="subject" required>
-        </div>
-        <div>
-            <label for="recipient_emails">Recipient Emails (comma separated)</label>
-            <input type="text" id="recipient_emails" name="recipient_emails" required>
-        </div>
-        <div>
-            <label for="message">Message</label>
-            <textarea id="message" name="message" required></textarea>
-        </div>
-        <div>
-            <button type="submit">Send Emails</button>
-        </div>
+  <div class="container">
+    <h1>Email Tool</h1>
+    <form id="emailForm" onsubmit="sendEmail(event)">
+      <input type="email" id="email" placeholder="Recipient's Email" required>
+      <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Email</button>
     </form>
+    <p id="statusMessage" class="message"></p>
+  </div>
 
-    <script>
-        document.getElementById('email-form').addEventListener('submit', async function(event) {
-            event.preventDefault();  
+  <script>
+    function sendEmail(event) {
+      event.preventDefault(); 
 
-            const senderEmail = document.getElementById('sender_email').value;
-            const senderPassword = document.getElementById('sender_password').value;
-            const subject = document.getElementById('subject').value;
-            const recipientEmails = document.getElementById('recipient_emails').value.split(',');
-            const message = document.getElementById('message').value;
+      const email = document.getElementById("email").value; 
+      const message = document.getElementById("message").value; 
+      const statusMessage = document.getElementById("statusMessage");
 
-            
-            document.getElementById('messages').innerHTML = "<div class='alert'>Sending emails...</div>";
-
-            try {
-                document.getElementById('messages').innerHTML = "<div class='alert success'>Emails sent successfully!</div>";
-
-            } catch (error) {
-                document.getElementById('messages').innerHTML = "<div class='alert danger'>Error: " + error.message + "</div>";
-            }
-        });
-    </script>
+      
+      Email.send({
+        SecureToken: "d4aa744f-4094-46ee-a412-b006619f0873", 
+        To: email, 
+        From: "tanishqdhuper@gmail.com", 
+        Subject: "Message from NS Hacks Email Tool", 
+        Body: message, 
+      }).then(response => {
+        statusMessage.style.color = "green";
+        statusMessage.textContent = "Email sent successfully!";
+      }).catch(error => {
+        statusMessage.style.color = "red";
+        statusMessage.textContent = "Failed to send email: " + error;
+      });
+    }
+  </script>
 </body>
 </html>
