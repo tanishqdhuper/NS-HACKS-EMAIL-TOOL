@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Mass Email</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #B8DBD9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 80%;
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    #top{
+        padding-top: 10px;
+        height: 50px;
+        background-color: #2D3F49;
+        color: white;
+        text-align: center;
+        font-size: 25px;
+        font-family:sans-serif;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      font-weight: bold;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 150px;
+    }
+    .button {
+      background-color: #2F4550;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+    .button:hover {
+      background-color: #586F7C;
+    }
+    #statusMessage {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+  </style>
+  
+  <script src="https://smtpjs.com/v3/smtp.js"></script>
+</head>
+<body>
+    <div id="top">Mass Email Sender</div>
+  <div class="container">
+    <h2>Create Your Mass Email</h2>
+    <form id="emailForm" onsubmit="sendMassEmail(event)">
+      <div class="form-group">
+        <label for="emails">Recipient Emails (comma-separated):</label>
+        <input type="text" id="emails" name="emails" required>
+      </div>
+      <div class="form-group">
+        <label for="message">Email Content:</label>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+      <button type="submit" class="button">Send Mass Email</button>
+    </form>
+    <div id="statusMessage"></div>
+  </div>
+
+  
+  <script>
+    function sendMassEmail(event) {
+      event.preventDefault(); 
+
+      const statusMessage = document.getElementById("statusMessage");
+      const emailsInput = document.getElementById("emails").value;
+      const message = document.getElementById("message").value;
+
+      const emails = emailsInput.split(",").map(email => email.trim());
+
+      let successCount = 0;
+      let failCount = 0;
+
+      emails.forEach(email => {
+        Email.send({
+          SecureToken: "generated token goes inhere",  
+          To: email, 
+          From: "tanishqdhuper@gmail.com",  
+          Subject: "Message from NS Hacks Mass Email Tool", 
+          Body: message, 
+        }).then(response => {
+          successCount++;
+          if (successCount + failCount === emails.length) {
+            statusMessage.style.color = "green";
+            statusMessage.textContent = `Emails sent successfully! (${successCount} out of ${emails.length})`;
+          }
+        }).catch(error => {
+          failCount++;
+          if (successCount + failCount === emails.length) {
+            statusMessage.style.color = "red";
+            statusMessage.textContent = `Failed to send emails: ${failCount} errors.`;
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>

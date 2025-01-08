@@ -1,125 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mass Email Tool</title>
-  <script src="https://smtpjs.com/v3/smtp.js"></script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 600px;
-      background-color: white;
-      padding: 20px;
-      border: 1px solid #ccc;
-    }
-
-    h1 {
-      text-align: center;
-      font-size: 22px;
-      color: #333;
-      margin-bottom: 15px;
-    }
-
-    input, textarea, button {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 14px;
-    }
-
-    input:focus, textarea:focus {
-      border-color: #4CAF50;
-      outline: none;
-    }
-
-    button {
-      background-color: #87CEEB; 
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    button:hover {
-      background-color: #7EC8D2; 
-    }
-
-    .message {
-      text-align: center;
-      font-size: 14px;
-      color: #666;
-      margin-top: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mass Email Sender</title>
+    <link rel="stylesheet" href="styles.css">
+    
 </head>
 <body>
-  <div class="container">
-    <h1>Mass Email Tool</h1>
-    <form id="emailForm" onsubmit="sendMassEmail(event)">
-      <label for="emails">Enter Email Addresses (separate with commas):</label>
-      <input type="text" id="emails" placeholder="e.g. email1@example.com, email2@example.com" required>
+    <div id="navbar" >
+    <div id="logo">Mass Email Sender Tool </div>
+   
+</div >
+<div id="home">
+    <div class="name">Mass </div>
+    <br>
+    <div class="name" width="500px">Email Sender</div>
+   <div ><img align="right" src="mail.jpg" alt="" height="400px" width="400px"  ></div>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+   <div id="content"><pre>Secure,Smart,Fast & 
+easy to use Email Sender</pre></div>
+   </br>
+   </br>
+</br>
+    <div id="box">
+    <a href="send.html" id="sendemail">Send Email</a>
+    </div>
 
-      <label for="message">Your Message:</label>
-      <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
-
-      <button type="submit">Send Emails</button>
-    </form>
-    <p id="statusMessage" class="message"></p>
-  </div>
-
-  <script>
-    function sendMassEmail(event) {
-      event.preventDefault(); 
-
-      const statusMessage = document.getElementById("statusMessage");
-      const emailsInput = document.getElementById("emails").value;
-      const message = document.getElementById("message").value;
-
-      const emails = emailsInput.split(",").map(email => email.trim());
-
-      let successCount = 0;
-      let failCount = 0;
-
-      emails.forEach(email => {
-        Email.send({
-          SecureToken: "d4aa744f-4094-46ee-a412-b006619f0873", 
-          To: email, 
-          From: "tanishqdhuper@gmail.com", 
-          Subject: "Message from NS Hacks Mass Email Tool", 
-          Body: message, 
-        }).then(response => {
-          successCount++;
-          if (successCount + failCount === emails.length) {
-            statusMessage.style.color = "green";
-            statusMessage.textContent = `Emails sent successfully! (${successCount} out of ${emails.length})`;
-          }
-        }).catch(error => {
-          failCount++;
-          if (successCount + failCount === emails.length) {
-            statusMessage.style.color = "red";
-            statusMessage.textContent = `Failed to send emails: ${failCount} errors.`;
-          }
-        });
-      });
-    }
-  </script>
+</div>
+    
 </body>
 </html>
