@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Email Tool</title>
+  <title>Mass Email Tool</title>
   <script src="https://smtpjs.com/v3/smtp.js"></script>
   <style>
     * {
@@ -23,7 +23,7 @@
 
     .container {
       width: 100%;
-      max-width: 400px;
+      max-width: 600px;
       background-color: white;
       padding: 20px;
       border: 1px solid #ccc;
@@ -72,36 +72,52 @@
 </head>
 <body>
   <div class="container">
-    <h1>Email Tool</h1>
-    <form id="emailForm" onsubmit="sendEmail(event)">
-      <input type="email" id="email" placeholder="Recipient's Email" required>
+    <h1>Mass Email Tool</h1>
+    <form id="emailForm" onsubmit="sendMassEmail(event)">
+      <label for="emails">Enter Email Addresses (separate with commas):</label>
+      <input type="text" id="emails" placeholder="e.g. email1@example.com, email2@example.com" required>
+
+      <label for="message">Your Message:</label>
       <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
-      <button type="submit">Send Email</button>
+
+      <button type="submit">Send Emails</button>
     </form>
     <p id="statusMessage" class="message"></p>
   </div>
 
   <script>
-    function sendEmail(event) {
+    function sendMassEmail(event) {
       event.preventDefault(); 
 
-      const email = document.getElementById("email").value; 
-      const message = document.getElementById("message").value; 
       const statusMessage = document.getElementById("statusMessage");
+      const emailsInput = document.getElementById("emails").value;
+      const message = document.getElementById("message").value;
 
-      
-      Email.send({
-        SecureToken: "d4aa744f-4094-46ee-a412-b006619f0873", 
-        To: email, 
-        From: "tanishqdhuper@gmail.com", 
-        Subject: "Message from NS Hacks Email Tool", 
-        Body: message, 
-      }).then(response => {
-        statusMessage.style.color = "green";
-        statusMessage.textContent = "Email sent successfully!";
-      }).catch(error => {
-        statusMessage.style.color = "red";
-        statusMessage.textContent = "Failed to send email: " + error;
+      const emails = emailsInput.split(",").map(email => email.trim());
+
+      let successCount = 0;
+      let failCount = 0;
+
+      emails.forEach(email => {
+        Email.send({
+          SecureToken: "d4aa744f-4094-46ee-a412-b006619f0873", 
+          To: email, 
+          From: "tanishqdhuper@gmail.com", 
+          Subject: "Message from NS Hacks Mass Email Tool", 
+          Body: message, 
+        }).then(response => {
+          successCount++;
+          if (successCount + failCount === emails.length) {
+            statusMessage.style.color = "green";
+            statusMessage.textContent = `Emails sent successfully! (${successCount} out of ${emails.length})`;
+          }
+        }).catch(error => {
+          failCount++;
+          if (successCount + failCount === emails.length) {
+            statusMessage.style.color = "red";
+            statusMessage.textContent = `Failed to send emails: ${failCount} errors.`;
+          }
+        });
       });
     }
   </script>
